@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Manual Rainfall Prediction{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Manual Rainfall Prediction</h1>
+</header>
+
+<form id="manualForm">
+    <div class="form-group">
+        <label>Humidity (%)</label>
+        <input type="number" id="humidity" required>
+    </div>
+
+    <div class="form-group">
+        <label>Pressure (hPa)</label>
+        <input type="number" id="pressure" required>
+    </div>
+
+    <div class="form-group">
+        <label>Temperature (°C)</label>
+        <input type="number" id="temperature" required>
+    </div>
+
+    <div class="form-group">
+        <label>Cloud Cover (%)</label>
+        <input type="number" id="cloud" required>
+    </div>
+
+    <div class="form-group">
+        <label>Wind Speed (km/h)</label>
+        <input type="number" id="wind" required>
+    </div>
+
+    <button type="submit">Predict Rainfall</button>
+</form>
+
+<div id="manualResult" class="hidden" style="margin-top: 20px; text-align: center;">
+    <h2 id="prediction-text"></h2>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById("manualForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const payload = {
+            humidity: document.getElementById("humidity").value,
+            pressure: document.getElementById("pressure").value,
+            temperature: document.getElementById("temperature").value,
+            cloud: document.getElementById("cloud").value,
+            wind: document.getElementById("wind").value
+        };
+
+        try {
+            const res = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            const resultDiv = document.getElementById("manualResult");
+            const predictionText = document.getElementById("prediction-text");
+
+            predictionText.textContent = data.prediction;
+            resultDiv.classList.remove("hidden");
+        } catch (err) {
+            console.error(err);
+            alert("An error occurred. Please try again.");
+        }
+    });
+</script>
+
+<style>
+    .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Forecast{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Weather Forecast</h1>
+</header>
+
+<div class="search-box">
+    <input type="text" id="city-input" placeholder="Enter city name...">
+    <button id="get-weather-btn">Get Weather</button>
+</div>
+
+<div id="error-message" class="hidden"></div>
+
+<div id="weather-container" class="hidden">
+    <div class="current-weather">
+        <h2 id="city-name"></h2>
+        <div class="main-temp">
+            <span id="current-temp"></span>°C
+        </div>
+        <div class="details">
+            <div class="detail-item">
+                <span class="label">Pressure</span>
+                <span id="current-pressure" class="value"></span> hPa
+            </div>
+            <div class="detail-item">
+                <span class="label">Rain</span>
+                <span id="current-rain" class="value"></span> mm
+            </div>
+        </div>
+    </div>
+
+    <div class="forecast">
+        <h3>Tomorrow</h3>
+        <div class="forecast-item">
+            <span class="label">Min</span>
+            <span id="tomorrow-min" class="value"></span>°C
+        </div>
+        <div class="forecast-item">
+            <span class="label">Max</span>
+            <span id="tomorrow-max" class="value"></span>°C
+        </div>
+    </div>
+
+    <div class="hourly-forecast">
+        <h3>Next 24 Hours</h3>
+        <div class="hourly-container" id="hourly-container">
+            <!-- Hourly items will be injected here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

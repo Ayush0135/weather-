@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <header>
+        <h1>Verify OTP</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Enter the 6-digit code sent to your email.</p>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for message in messages %}
+        <div class="flash-message">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <form method="post">
+        <div class="form-group">
+            <label for="otp">One-Time Password</label>
+            <input type="text" name="otp" id="otp" required maxlength="6" pattern="\d{6}" placeholder="123456"
+                style="letter-spacing: 5px; text-align: center; font-size: 24px;">
+        </div>
+        <button type="submit">Verify & Create Account</button>
+    </form>
+    <p class="auth-link"><a href="{{ url_for('signup') }}">Back to Sign Up</a></p>
+</div>
+{% endblock %}
